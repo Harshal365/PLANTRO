@@ -49,7 +49,7 @@ export function InstagramGallery() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <Link
-                href="https://instagram.com"
+                href="https://www.instagram.com/plantro.in/?hl=en"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group relative aspect-square overflow-hidden rounded-xl card-hover img-zoom-container"
@@ -68,7 +68,7 @@ export function InstagramGallery() {
         </div>
 
         <div className="text-center">
-          <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+          <Link href="https://www.instagram.com/plantro.in/?hl=en" target="_blank" rel="noopener noreferrer">
             <Button
               variant="outline"
               className="border-forest text-forest hover:bg-forest hover:text-primary-foreground px-8 btn-hover-lift group"

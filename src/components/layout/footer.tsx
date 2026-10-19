@@ -45,28 +45,30 @@ export function Footer() {
             <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
               Plants, planters, seeds and gardening essentials for greener living.
             </p>
-            <div className="flex space-x-3">
+            <div className="flex space-x-3 mb-6">
               <Link
-                href="#"
-                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-forest hover:text-white transition-all social-icon"
-                aria-label="Facebook"
-              >
-                <Share2 className="h-5 w-5" />
-              </Link>
-              <Link
-                href="#"
+                href="https://www.instagram.com/plantro.in/?hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-forest hover:text-white transition-all social-icon"
                 aria-label="Instagram"
               >
                 <Share2 className="h-5 w-5" />
               </Link>
-              <Link
-                href="#"
-                className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-forest hover:text-white transition-all social-icon"
-                aria-label="Twitter"
-              >
-                <Share2 className="h-5 w-5" />
-              </Link>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Phone className="h-4 w-4 text-forest" />
+                <a href="tel:8149082102" className="hover:text-forest transition-colors">
+                  8149082102
+                </a>
+              </div>
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Mail className="h-4 w-4 text-forest" />
+                <a href="mailto:contact@plantro.in" className="hover:text-forest transition-colors">
+                  contact@plantro.in
+                </a>
+              </div>
             </div>
           </div>
 
