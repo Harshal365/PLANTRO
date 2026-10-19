@@ -1,0 +1,266 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  phone         String?
+  avatar        String?
+  role          String    @default("customer")
+  emailVerified DateTime?
+  password      String?
+  
+  addresses     Address[]
+  orders        Order[]
+  wishlist      WishlistItem[]
+  reviews       Review[]
+  subscriptions Subscription[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+model Address {
+  id           String  @id @default(cuid())
+  userId       String
+  fullName     String
+  phone        String
+  addressLine1 String
+  addressLine2 String?
+  city         String
+  state        String
+  postalCode   String
+  country      String
+  isDefault    Boolean @default(false)
+  
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders       Order[]
+  
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("addresses")
+}
+
+model Category {
+  id           String     @id @default(cuid())
+  name         String
+  slug         String     @unique
+  description  String?
+  image        String?
+  icon         String?
+  parentId     String?
+  parent       Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children     Category[] @relation("CategoryHierarchy")
+  products     Product[]
+  
+  productCount Int        @default(0)
+  
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@map("categories")
+}
+
+model Product {
+  id                String   @id @default(cuid())
+  name              String
+  slug              String   @unique
+  description       String   @db.Text
+  shortDescription  String?
+  price             Decimal  @db.Decimal(10, 2)
+  compareAtPrice    Decimal? @db.Decimal(10, 2)
+  images            String[]
+  categoryId        String
+  category          Category @relation(fields: [categoryId], references: [id])
+  tags              String[]
+  
+  inStock           Boolean  @default(true)
+  stockQuantity     Int      @default(0)
+  
+  // Specifications
+  height            String?
+  potSize           String?
+  sunlight          String?
+  water             String?
+  difficulty        String?
+  petFriendly       Boolean  @default(false)
+  indoor            Boolean  @default(true)
+  outdoor           Boolean  @default(false)
+  airPurifying      Boolean  @default(false)
+  flowering         Boolean  @default(false)
+  fruitBearing      Boolean  @default(false)
+  fastGrowing       Boolean  @default(false)
+  medicinal         Boolean  @default(false)
+  
+  // Care Instructions
+  careWater         String?
+  careSunlight      String?
+  careTemperature   String?
+  careHumidity      String?
+  careFertilizer    String?
+  careRepotting     String?
+  carePruning       String?
+  
+  rating            Decimal  @default(0) @db.Decimal(3, 2)
+  reviewCount       Int      @default(0)
+  
+  isNew             Boolean  @default(false)
+  isBestSeller      Boolean  @default(false)
+  isFeatured        Boolean  @default(false)
+  
+  orderItems        OrderItem[]
+  wishlistItems     WishlistItem[]
+  reviews           Review[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("products")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  items           OrderItem[]
+  
+  status          String      @default("pending")
+  paymentStatus   String      @default("pending")
+  
+  shippingAddress Address     @relation(fields: [shippingAddressId], references: [id])
+  shippingAddressId String
+  billingAddress  Address     @relation(fields: [billingAddressId], references: [id])
+  billingAddressId  String
+  
+  subtotal        Decimal     @db.Decimal(10, 2)
+  shipping        Decimal     @db.Decimal(10, 2) @default(0)
+  tax             Decimal     @db.Decimal(10, 2) @default(0)
+  discount        Decimal     @db.Decimal(10, 2) @default(0)
+  total           Decimal     @db.Decimal(10, 2)
+  
+  paymentMethod   String?
+  trackingNumber  String?
+  estimatedDelivery DateTime?
+  notes           String?
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+
+  @@map("order_items")
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  addedAt   DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userName  String
+  userAvatar String?
+  rating    Int
+  title     String
+  content   String   @db.Text
+  images    String[]
+  helpful   Int      @default(0)
+  verified  Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String   @db.Text
+  coverImage  String
+  author      String
+  authorAvatar String?
+  category    String
+  tags        String[]
+  publishedAt DateTime?
+  readingTime Int      @default(5)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("blog_posts")
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan              String
+  status            String   @default("active")
+  startDate         DateTime @default(now())
+  nextDeliveryDate  DateTime?
+  deliveryFrequency String
+  preferences       String[]
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("subscriptions")
+}
+
+model Coupon {
+  id                  String   @id @default(cuid())
+  code                String   @unique
+  type                String
+  value               Decimal  @db.Decimal(10, 2)
+  minPurchase         Decimal? @db.Decimal(10, 2)
+  maxDiscount         Decimal? @db.Decimal(10, 2)
+  applicableCategories String[]
+  applicableProducts  String[]
+  usageLimit          Int?
+  usedCount           Int      @default(0)
+  validFrom           DateTime
+  validUntil          DateTime
+  isActive            Boolean  @default(true)
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("coupons")
+}
