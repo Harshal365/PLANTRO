@@ -1,3 +1,5 @@
+'use client';
+
 import { motion } from 'framer-motion';
 import { Heart, Leaf, Sprout, ShieldCheck } from 'lucide-react';
 

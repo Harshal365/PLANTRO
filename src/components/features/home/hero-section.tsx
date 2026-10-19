@@ -249,9 +249,8 @@ export function HeroSection() {
               className="absolute top-10 right-10 w-20 h-20 bg-sage/20 rounded-full blur-3xl float-animation z-10"
             />
             <motion.div
-              style={{ y: y1 }}
+              style={{ y: y1, animationDelay: '1.5s' }}
               className="absolute bottom-20 left-10 w-16 h-16 bg-forest/10 rounded-full blur-2xl float-animation z-10"
-              style={{ animationDelay: '1.5s' }}
             />
 
             {/* Subtle gradient overlay for depth */}

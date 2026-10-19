@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { ProductCard } from '@/components/features/products/product-card';
 import { plantsData, potsData, seedsData, toolsData, careData, giftingData } from '@/constants/products';
@@ -39,7 +40,7 @@ function fuzzyMatch(text: string, query: string): boolean {
   return false;
 }
 
-export default function SearchPage() {
+function SearchPageInner() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
 
@@ -90,3 +91,13 @@ export default function SearchPage() {
     </div>
   );
 }
+
+function SearchContent() {
+  return (
+    <Suspense fallback={<div className="container mx-auto px-4 py-8 md:py-12 lg:py-16"><div className="max-w-6xl mx-auto">Loading...</div></div>}>
+      <SearchPageInner />
+    </Suspense>
+  );
+}
+
+export default SearchContent;

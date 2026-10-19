@@ -17,17 +17,18 @@ export const metadata: Metadata = {
   description: "India's premium online plant nursery. Discover carefully curated indoor plants, outdoor plants, pots, seeds, and gardening essentials delivered to your doorstep.",
   keywords: ["plants", "online plant nursery", "indoor plants", "outdoor plants", "pots", "seeds", "gardening", "plant care"],
   authors: [{ name: "plantro" }],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
   openGraph: {
     title: "plantro - Premium Online Plant Nursery",
     description: "India's premium online plant nursery. Discover carefully curated plants and gardening essentials.",
     type: "website",
     locale: "en_IN",
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
