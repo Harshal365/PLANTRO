@@ -10,17 +10,17 @@ export function PotsPlantersSection() {
     {
       name: 'Mini Pots',
       description: 'Small spaces. Big charm.',
-      image: '/images/set%20of%203%20mini%20pots.png',
+      image: '/images/set-of-3-mini-pots.png',
     },
     {
       name: 'Hanging Planter',
       description: 'Take your greenery higher.',
-      image: '/images/Hanging%20Planter.png',
+      image: '/images/Hanging-Planter.png',
     },
     {
       name: 'Decorative Planter',
       description: 'Style your plants beautifully.',
-      image: '/images/Geometric%20Gold%20Planter.png',
+      image: '/images/Geometric-Gold-Planter.png',
     },
   ];
 

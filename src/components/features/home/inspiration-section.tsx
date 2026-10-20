@@ -17,22 +17,22 @@ export function InspirationSection() {
   const inspirations = [
     {
       title: 'Indoor Plant Ideas',
-      image: '/images/Aglaonema%20Lipstick%20Plant%20.png',
+      image: '/images/Aglaonema-Lipstick-Plant.png',
       link: '/care-guide',
     },
     {
       title: 'Plant Care Tips',
-      image: '/images/Snake%20Plant%20.png',
+      image: '/images/Snake-Plant.png',
       link: '/care-guide',
     },
     {
       title: 'Balcony Gardening',
-      image: '/images/Spider%20Plant%20.png',
+      image: '/images/Spider-Plant.png',
       link: '/care-guide',
     },
     {
       title: "Beginner's Guide",
-      image: '/images/Money%20Plant%20.png',
+      image: '/images/Money-Plant.png',
       link: '/care-guide',
     },
   ];

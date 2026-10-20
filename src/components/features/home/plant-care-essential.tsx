@@ -21,7 +21,7 @@ export function PlantCareEssential() {
             <div className="relative order-2 lg:order-1">
               <div className="aspect-square rounded-3xl overflow-hidden bg-cream/50">
                 <img
-                  src="/images/Moisture%20meter.png"
+                  src="/images/Moisture-meter.png"
                   alt="Plantro Soil Moisture, pH & Light Meter"
                   className="w-full h-full object-contain p-8"
                 />

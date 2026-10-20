@@ -17,17 +17,17 @@ export function CherryTomatoCarousel() {
   
   const images = [
     {
-      src: '/images/Cherry%20Tomato%20seeds.png',
+      src: '/images/Cherry-Tomato-seeds.png',
       alt: 'Cherry Tomato Seeds',
       name: 'Cherry Tomato Seeds',
     },
     {
-      src: '/images/cherry%20tomato%202.png',
+      src: '/images/cherry-tomato-2.png',
       alt: 'Cherry Tomato 2',
       name: 'Cherry Tomato',
     },
     {
-      src: '/images/cherry%20tomato%203.png',
+      src: '/images/cherry-tomato-3.png',
       alt: 'Cherry Tomato 3',
       name: 'Cherry Tomato',
     },

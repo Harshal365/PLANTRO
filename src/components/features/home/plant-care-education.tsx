@@ -22,7 +22,7 @@ export function PlantCareEducation() {
             <div className="relative">
               <div className="aspect-[4/5] rounded-3xl overflow-hidden">
                 <img
-                  src="/images/Peace%20Lilly.png"
+                  src="/images/Peace-Lilly.png"
                   alt="Plantro Brand Story"
                   className="w-full h-full object-cover"
                 />

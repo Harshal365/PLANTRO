@@ -15,10 +15,10 @@ export function HeroSection() {
   const [currentHeroImage, setCurrentHeroImage] = useState(() => {
     // Random starting image on refresh
     const heroImages = [
-      '/images/Aglaonema%20Lipstick%20Plant%20.png',
-      '/images/Syngonium%20Plant%20.png',
-      '/images/Rose%20Plant%20.png',
-      '/images/Monstera%20Plant%20.png',
+      '/images/Aglaonema-Lipstick-Plant.png',
+      '/images/Syngonium-Plant.png',
+      '/images/Rose-Plant.png',
+      '/images/Monstera-Plant.png',
     ];
     return Math.floor(Math.random() * heroImages.length);
   });
@@ -27,10 +27,10 @@ export function HeroSection() {
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
   const heroImages = [
-    '/images/Aglaonema%20Lipstick%20Plant%20.png',
-    '/images/Syngonium%20Plant%20.png',
-    '/images/Rose%20Plant%20.png',
-    '/images/Monstera%20Plant%20.png',
+    '/images/Aglaonema-Lipstick-Plant.png',
+    '/images/Syngonium-Plant.png',
+    '/images/Rose-Plant.png',
+    '/images/Monstera-Plant.png',
   ];
 
   // Auto-rotate hero images every 7.5 seconds

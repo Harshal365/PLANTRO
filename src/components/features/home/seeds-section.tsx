@@ -10,12 +10,12 @@ export function SeedsSection() {
     {
       name: 'CORIANDER SEEDS',
       description: 'Grow fresh coriander at home.',
-      image: '/images/Coriander%20seeds.png',
+      image: '/images/Coriander-seeds.png',
     },
     {
       name: 'SPINACH SEEDS',
       description: 'Fresh greens, grown by you.',
-      image: '/images/Spinach%20Seeds.png',
+      image: '/images/Spinach-Seeds.png',
     },
   ];
 

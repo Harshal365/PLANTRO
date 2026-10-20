@@ -20,7 +20,7 @@ export function FeaturedCollections() {
             <Link href="/shop/plants" className="group relative overflow-hidden rounded-2xl aspect-[16/9] card-hover">
               <div className="absolute inset-0 bg-gradient-to-br from-forest/30 to-forest/10 z-10" />
               <img
-                src="/images/Aglaonema%20Lipstick%20Plant%20.png"
+                src="/images/Aglaonema-Lipstick-Plant.png"
                 alt="Bring Your Space to Life"
                 className="w-full h-full object-cover img-zoom"
               />
@@ -50,7 +50,7 @@ export function FeaturedCollections() {
             <Link href="/shop/seeds" className="group relative overflow-hidden rounded-2xl aspect-[16/9] card-hover">
               <div className="absolute inset-0 bg-gradient-to-br from-sage/30 to-sage/10 z-10" />
               <img
-                src="/images/Coriander%20seeds.png"
+                src="/images/Coriander-seeds.png"
                 alt="Grow From the Very Beginning"
                 className="w-full h-full object-cover img-zoom"
               />

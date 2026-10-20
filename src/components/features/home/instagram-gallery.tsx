@@ -7,12 +7,12 @@ import { Button } from '@/components/ui/button';
 
 export function InstagramGallery() {
   const galleryImages = [
-    '/images/Peace%20Lilly.png',
-    '/images/Monstera%20Plant%20.png',
-    '/images/Snake%20Plant%20.png',
-    '/images/Aglaonema%20pink%20beauty%20.png',
-    '/images/Money%20Plant%20.png',
-    '/images/Lucky%20Bamboo%20.png',
+    '/images/Peace-Lilly.png',
+    '/images/Monstera-Plant.png',
+    '/images/Snake-Plant.png',
+    '/images/Aglaonema-pink-beauty.png',
+    '/images/Money-Plant.png',
+    '/images/Lucky-Bamboo.png',
   ];
 
   return (

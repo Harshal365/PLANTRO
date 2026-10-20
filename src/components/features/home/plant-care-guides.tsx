@@ -12,19 +12,19 @@ export function PlantCareGuides() {
       category: 'PLANT CARE',
       title: 'How Often Should You Water Your Plants?',
       description: 'Learn the signs your plants need water and establish the perfect watering routine.',
-      image: '/images/Lucky%20Bamboo%20.png',
+      image: '/images/Lucky-Bamboo.png',
     },
     {
       category: 'BEGINNER GUIDES',
       title: 'Best Indoor Plants for Beginners',
       description: 'Discover low-maintenance plants that are perfect for new plant parents.',
-      image: '/images/Snake%20Plant%20.png',
+      image: '/images/Snake-Plant.png',
     },
     {
       category: 'GROWING',
       title: 'How to Grow Plants From Seeds',
       description: 'Step-by-step guide to starting your plants from seeds successfully.',
-      image: '/images/Basil%20seeds.png',
+      image: '/images/Basil-seeds.png',
     },
   ];
 
