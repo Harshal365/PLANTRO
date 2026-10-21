@@ -19,15 +19,10 @@ export function CartSlideOver() {
     <Sheet open={isOpen} onOpenChange={toggleCart}>
       <SheetContent className="w-full sm:max-w-lg flex flex-col p-0">
         <SheetHeader className="p-6 border-b">
-          <div className="flex items-center justify-between">
-            <SheetTitle className="flex items-center gap-2">
-              <ShoppingBag className="h-5 w-5" />
-              Shopping Cart ({items.length})
-            </SheetTitle>
-            <Button variant="ghost" size="icon" onClick={toggleCart}>
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
+          <SheetTitle className="flex items-center gap-2">
+            <ShoppingBag className="h-5 w-5" />
+            Shopping Cart ({items.length})
+          </SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
