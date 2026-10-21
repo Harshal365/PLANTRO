@@ -18,17 +18,79 @@ model User {
   role          String    @default("customer")
   emailVerified DateTime?
   password      String?
-  
+
+  // OAuth Providers
+  accounts      Account[]
+  sessions      Session[]
+
+  // Ad Campaign Tracking
+  adSource      String?   // "facebook", "google", "instagram", "organic", "referral"
+  adCampaignId  String?   // Campaign ID that brought this user
+  adSetId       String?   // Ad set ID
+  adId          String?   // Specific ad ID
+  utmSource     String?   // UTM parameters for tracking
+  utmMedium     String?
+  utmCampaign   String?
+  utmTerm       String?
+  utmContent    String?
+  firstVisitAt  DateTime? // When user first visited
+
+  // Additional User Data
+  dateOfBirth   DateTime?
+  gender        String?
+  preferences   Json?     // User preferences as JSON
+  lastLoginAt   DateTime?
+  loginCount    Int       @default(0)
+
   addresses     Address[]
   orders        Order[]
   wishlist      WishlistItem[]
   reviews       Review[]
   subscriptions Subscription[]
-  
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model Address {
@@ -136,26 +198,38 @@ model Order {
   userId          String
   user            User        @relation(fields: [userId], references: [id])
   items           OrderItem[]
-  
+
   status          String      @default("pending")
   paymentStatus   String      @default("pending")
-  
+
   shippingAddress Address     @relation(fields: [shippingAddressId], references: [id])
   shippingAddressId String
   billingAddress  Address     @relation(fields: [billingAddressId], references: [id])
   billingAddressId  String
-  
+
   subtotal        Decimal     @db.Decimal(10, 2)
   shipping        Decimal     @db.Decimal(10, 2) @default(0)
   tax             Decimal     @db.Decimal(10, 2) @default(0)
   discount        Decimal     @db.Decimal(10, 2) @default(0)
   total           Decimal     @db.Decimal(10, 2)
-  
+
   paymentMethod   String?
   trackingNumber  String?
   estimatedDelivery DateTime?
   notes           String?
-  
+
+  // Ad Campaign Tracking
+  campaignId      String?     // Campaign that led to this order
+  adPlatform      String?     // "facebook", "google", "instagram", etc.
+  adSetId         String?
+  adId            String?
+  utmSource       String?
+  utmMedium       String?
+  utmCampaign     String?
+  conversionValue Decimal?    @db.Decimal(10, 2) // For ROI calculation
+
+  campaign        AdCampaign? @relation(fields: [campaignId], references: [id])
+
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
@@ -263,4 +337,83 @@ model Coupon {
   updatedAt           DateTime @updatedAt
 
   @@map("coupons")
+}
+
+model AdCampaign {
+  id              String   @id @default(cuid())
+  name            String
+  platform        String   // "facebook", "google", "instagram", etc.
+  campaignId      String   @unique // Platform-specific campaign ID
+  status          String   @default("active") // "active", "paused", "completed"
+  budget          Decimal  @db.Decimal(10, 2)
+  spent           Decimal  @db.Decimal(10, 2) @default(0)
+  startDate       DateTime
+  endDate         DateTime?
+
+  // Tracking
+  impressions     Int      @default(0)
+  clicks          Int      @default(0)
+  conversions    Int      @default(0)
+  conversionValue Decimal  @db.Decimal(10, 2) @default(0)
+
+  targeting       Json?    // Targeting criteria as JSON
+  creativeAssets  String[] // URLs to ad images/videos
+
+  orders          Order[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("ad_campaigns")
+}
+
+model UserSession {
+  id          String   @id @default(cuid())
+  userId      String?
+  sessionId   String   @unique
+  ipAddress   String?
+  userAgent   String?
+  referrer    String?
+
+  // UTM Parameters
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmTerm     String?
+  utmContent  String?
+
+  // Ad Tracking
+  adSource    String?
+  adCampaignId String?
+  adSetId     String?
+  adId        String?
+
+  // Session Activity
+  pageViews   Int      @default(0)
+  timeSpent   Int      @default(0) // in seconds
+  bounced    Boolean  @default(false)
+  converted  Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("user_sessions")
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  userId      String?
+  sessionId   String?
+  eventType   String   // "page_view", "add_to_cart", "purchase", "signup", etc.
+  eventName   String
+  eventData   Json?    // Event-specific data
+  value       Decimal? @db.Decimal(10, 2) // Monetary value if applicable
+
+  // Ad Attribution
+  campaignId  String?
+  adPlatform String?
+
+  createdAt   DateTime @default(now())
+
+  @@map("analytics_events")
 }
