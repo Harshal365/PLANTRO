@@ -53,7 +53,7 @@ export function PlantCareGuides() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
               >
-                <Link href="/blog" className="group">
+                <Link href="/about" className="group">
                   <div className="bg-background rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 card-hover">
                     <div className="aspect-[16/10] overflow-hidden img-zoom-container">
                       <img
@@ -84,7 +84,7 @@ export function PlantCareGuides() {
           </div>
 
           <div className="text-center">
-            <Link href="/blog">
+            <Link href="/about">
               <Button
                 variant="outline"
                 className="border-forest text-forest hover:bg-forest hover:text-primary-foreground px-8 btn-hover-lift group"

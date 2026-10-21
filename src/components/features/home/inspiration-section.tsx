@@ -18,22 +18,22 @@ export function InspirationSection() {
     {
       title: 'Indoor Plant Ideas',
       image: '/images/Aglaonema-Lipstick-Plant.png',
-      link: '/care-guide',
+      link: '/about',
     },
     {
       title: 'Plant Care Tips',
       image: '/images/Snake-Plant.png',
-      link: '/care-guide',
+      link: '/about',
     },
     {
       title: 'Balcony Gardening',
       image: '/images/Spider-Plant.png',
-      link: '/care-guide',
+      link: '/about',
     },
     {
       title: "Beginner's Guide",
       image: '/images/Money-Plant.png',
-      link: '/care-guide',
+      link: '/about',
     },
   ];
 
