@@ -6,7 +6,7 @@ import { prisma } from "@/lib/prisma"
 // GET /api/orders/:id - Get specific order
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -16,7 +16,7 @@ export async function GET(
     }
 
     const userId = (session.user as any).id
-    const orderId = params.id
+    const { id: orderId } = await params
 
     const order = await prisma.order.findFirst({
       where: {
