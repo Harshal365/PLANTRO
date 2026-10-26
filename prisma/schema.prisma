@@ -107,8 +107,9 @@ model Address {
   isDefault    Boolean @default(false)
   
   user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orders       Order[]
-  
+  shippingOrders Order[] @relation("ShippingAddress")
+  billingOrders Order[] @relation("BillingAddress")
+
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -202,9 +203,9 @@ model Order {
   status          String      @default("pending")
   paymentStatus   String      @default("pending")
 
-  shippingAddress Address     @relation(fields: [shippingAddressId], references: [id])
+  shippingAddress Address     @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
   shippingAddressId String
-  billingAddress  Address     @relation(fields: [billingAddressId], references: [id])
+  billingAddress  Address     @relation("BillingAddress", fields: [billingAddressId], references: [id])
   billingAddressId  String
 
   subtotal        Decimal     @db.Decimal(10, 2)
