@@ -11,3 +11,12 @@ export const prisma =
   });
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
+// Make prisma optional to prevent build errors when DATABASE_URL is not set
+export const getPrisma = () => {
+  if (!process.env.DATABASE_URL) {
+    console.warn('DATABASE_URL is not set. Prisma client will not be initialized.');
+    return null;
+  }
+  return prisma;
+};

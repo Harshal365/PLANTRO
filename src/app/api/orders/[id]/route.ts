@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+
+async function getPrisma() {
+  const { prisma } = await import("@/lib/prisma");
+  return prisma;
+}
 
 // GET /api/orders/:id - Get specific order
 export async function GET(
@@ -17,6 +21,11 @@ export async function GET(
 
     const userId = (session.user as any).id
     const { id: orderId } = await params
+    const prisma = await getPrisma();
+
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
 
     const order = await prisma.order.findFirst({
       where: {

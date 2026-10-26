@@ -1,12 +1,24 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
+// Lazy load Prisma to prevent build errors
+let prisma: any = null;
+
+async function getPrisma() {
+  if (!prisma) {
+    const { prisma: prismaClient } = await import("@/lib/prisma");
+    prisma = prismaClient;
+  }
+  return prisma;
+}
+
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  // Only use adapter if DATABASE_URL is set
+  ...(process.env.DATABASE_URL ? {
+    adapter: (await import("@next-auth/prisma-adapter")).PrismaAdapter(await getPrisma()),
+  } : {}),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -23,7 +35,12 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid credentials")
         }
 
-        const user = await prisma.user.findUnique({
+        const prismaClient = await getPrisma();
+        if (!prismaClient) {
+          throw new Error("Database not configured")
+        }
+
+        const user = await prismaClient.user.findUnique({
           where: {
             email: credentials.email
           }

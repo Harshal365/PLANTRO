@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
+
+async function getPrisma() {
+  const { prisma } = await import("@/lib/prisma");
+  return prisma;
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,7 +15,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
-    // Check if user already exists
+    const prisma = await getPrisma();
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email }
     })
@@ -20,10 +28,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User already exists" }, { status: 400 })
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
-    // Create user with ad tracking data
     const user = await prisma.user.create({
       data: {
         email,

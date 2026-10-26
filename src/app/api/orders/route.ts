@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+
+async function getPrisma() {
+  const { prisma } = await import("@/lib/prisma");
+  return prisma;
+}
 
 // GET /api/orders - Get user's orders
 export async function GET(req: NextRequest) {
@@ -13,6 +17,11 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = (session.user as any).id
+    const prisma = await getPrisma();
+
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
 
     const orders = await prisma.order.findMany({
       where: { userId },
@@ -72,10 +81,13 @@ export async function POST(req: NextRequest) {
       utmCampaign,
     } = body
 
-    // Generate order number
+    const prisma = await getPrisma();
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
+
     const orderNumber = `PLT${Date.now().toString().slice(-8)}`
 
-    // Create shipping address if not exists
     let shippingAddrId = shippingAddress.id
     if (!shippingAddrId) {
       const newAddress = await prisma.address.create({
@@ -95,7 +107,6 @@ export async function POST(req: NextRequest) {
       shippingAddrId = newAddress.id
     }
 
-    // Create billing address if not exists
     let billingAddrId = billingAddress.id
     if (!billingAddrId) {
       const newAddress = await prisma.address.create({
@@ -115,7 +126,6 @@ export async function POST(req: NextRequest) {
       billingAddrId = newAddress.id
     }
 
-    // Create order
     const order = await prisma.order.create({
       data: {
         orderNumber,

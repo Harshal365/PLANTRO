@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
+
+async function getPrisma() {
+  const { prisma } = await import("@/lib/prisma");
+  return prisma;
+}
 
 // GET /api/users - Get current user or all users (admin only)
 export async function GET(req: NextRequest) {
@@ -14,8 +18,12 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = (session.user as any).id
+    const prisma = await getPrisma();
 
-    // Get current user's data
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
+
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {
@@ -68,7 +76,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
-    // Check if user already exists
+    const prisma = await getPrisma();
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
+
     const existingUser = await prisma.user.findUnique({
       where: { email }
     })
@@ -77,10 +89,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User already exists" }, { status: 400 })
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 12)
 
-    // Create user with ad tracking data
     const user = await prisma.user.create({
       data: {
         email,
@@ -125,6 +135,11 @@ export async function PUT(req: NextRequest) {
     const userId = (session.user as any).id
     const body = await req.json()
     const { name, phone, dateOfBirth, gender, preferences } = body
+
+    const prisma = await getPrisma();
+    if (!prisma) {
+      return NextResponse.json({ error: "Database not configured" }, { status: 503 })
+    }
 
     const user = await prisma.user.update({
       where: { id: userId },
